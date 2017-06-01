@@ -1,12 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!--Maven的版本号，固定不变-->
   <modelVersion>4.0.0</modelVersion>
+  <!--项目坐标，groupId=项目包名，反写的公司网址+项目名，artifactId=包名，项目名+模块名 -->
   <groupId>com</groupId>
   <artifactId>mmall</artifactId>
+  <!--打包方式 war zip pom-->
   <packaging>war</packaging>
+  <!--第一个0大版本，第2个0分支版本号，第3个表示小版本号， snapshot开发，alpha内测/beta公测/release稳定/ga发布/-->
   <version>1.0-SNAPSHOT</version>
+  <!--产生项目文档时使用-->
   <name>mmall Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  <!--<description></description>-->
+  <!--<developers></developers>-->
+  <!--<licenses></licenses>-->
+  <!--<organization></organization>-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,12 +27,20 @@
     <org.mybatis.spring.version>1.3.0</org.mybatis.spring.version>
   </properties>
 
+  <!--denpency的本质是将jar file配置到classpath中，maven有三种classpath：test/runtime/compile/-->
+  <!--compile是默认对三种classpath都有效，provided只对test/compile有效（servlet API），runtime即compile不需要（jdbc driver), test即只在test代码范围引用（junit）-->
   <dependencies>
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-servlet-api</artifactId>
       <version>7.0.64</version>
+      <!--<type></type>-->
+      <!--<optional>true/false</optional> 依赖是否可选-->
+      <!--<scope>test/runtime/compile</scope> 代码的引用范围-->
+      <!--<exclusions>-->
+        <!--<exclude>排除依赖引用传递</exclude>-->
+      <!--</exclusions>-->
     </dependency>
 
     <dependency>
@@ -138,7 +155,8 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <!--<scope>test</scope>-->
+      <!--只在测试代码范围内引用有效-->
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -246,9 +264,10 @@
     </dependency>
   </dependencies>
 
-
+<!--对构建行为提供相应支持-->
   <build>
     <finalName>mmall</finalName>
+    <!--插件列表-->
     <plugins>
       <plugin>
         <groupId>org.mybatis.generator</groupId>
@@ -277,5 +296,17 @@
 
   </build>
 
+  <!--定义在父模块中，不直接引入，供子模块使用
+  <dependencyManagement>-->
+    <!--<dependencies>-->
+      <!--<dependency>-->
+        <!--<groupId></groupId>-->
+        <!--<artifactId></artifactId>-->
+      <!--</dependency>-->
+    <!--</dependencies>-->
+  <!--</dependencyManagement>-->
 
+  <!--<parent>子模块对父模块的继承，继承什么？dependencyManagement中的version/scope ？</parent>-->
+
+  <!--<modules>多个maven模块的聚合，不需要一个一个模块编译</modules>-->
 </project>
