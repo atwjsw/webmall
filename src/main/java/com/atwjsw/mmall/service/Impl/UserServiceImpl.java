@@ -32,7 +32,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
-
+        System.out.println("MD5Util.MD5EncodeUtf8(password)" + MD5Util.MD5EncodeUtf8(password));
         User user = userMapper.selectLogin(username, MD5Util.MD5EncodeUtf8(password));
         if (user == null) {
             return ServerResponse.createByErrorMessage("密码错误");

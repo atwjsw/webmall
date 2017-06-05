@@ -11,13 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * Created by wenda on 6/1/2017.
  */
 @Controller
-@RequestMapping("/category/manage/")
+@RequestMapping("/manage/category")
 public class CategoryManageController {
 
     @Autowired

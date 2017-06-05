@@ -73,7 +73,7 @@ public class CategoryServiceImpl implements ICategoryService{
      * @param categoryId
      * @return
      */
-    public ServerResponse selectCategoryAndChildrenById(Integer categoryId) {
+    public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId) {
 //        List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
         logger.debug("递归查询本节点的id及孩子节点的id");
         Set<Category> categorySet = Sets.newHashSet();
