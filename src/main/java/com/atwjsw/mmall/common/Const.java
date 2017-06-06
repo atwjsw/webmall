@@ -15,6 +15,14 @@ public class Const {
 
     public interface ProductListOrderBy {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
+    }
+
+    public interface Cart {
+        int CHECKED = 1; //购物车中选中状态
+        int UNCHECKED = 0; //购物车中未选中状态
+
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
 
     }
 
