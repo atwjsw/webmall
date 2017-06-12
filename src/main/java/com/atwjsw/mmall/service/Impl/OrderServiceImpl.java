@@ -29,7 +29,7 @@ import com.atwjsw.mmall.util.PropertiesUtil;
 import com.atwjsw.mmall.vo.OrderItemVo;
 import com.atwjsw.mmall.vo.OrderProductVo;
 import com.atwjsw.mmall.vo.OrderVo;
-import com.atwjsw.mmall.vo.ShippingVo;
+import com.atwjsw.mmall.vo.ShippingVoNew;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -295,8 +295,8 @@ public class OrderServiceImpl implements IOrderService {
         return orderItemVo;
     }
 
-    private ShippingVo assembleShippingVo(Shipping shipping) {
-        ShippingVo shippingVo = new ShippingVo();
+    private ShippingVoNew assembleShippingVo(Shipping shipping) {
+        ShippingVoNew shippingVo = new ShippingVoNew();
         shippingVo.setReceiverName(shipping.getReceiverName());
         shippingVo.setReceiverAddress(shipping.getReceiverAddress());
         shippingVo.setReceiverDistrict(shipping.getReceiverDistrict());
