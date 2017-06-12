@@ -295,7 +295,7 @@ public class OrderServiceImpl implements IOrderService {
         return orderItemVo;
     }
 
-    private ShippingVo  assembleShippingVo(Shipping shipping) {
+    private ShippingVo assembleShippingVo(Shipping shipping) {
         ShippingVo shippingVo = new ShippingVo();
         shippingVo.setReceiverName(shipping.getReceiverName());
         shippingVo.setReceiverAddress(shipping.getReceiverAddress());
