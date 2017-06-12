@@ -1,7 +1,5 @@
 package com.atwjsw.mmall.util;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.apache.commons.io.IOExceptionWithCause;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

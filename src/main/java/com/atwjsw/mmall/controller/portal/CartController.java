@@ -5,7 +5,6 @@ import com.atwjsw.mmall.common.ResponseCode;
 import com.atwjsw.mmall.common.ServerResponse;
 import com.atwjsw.mmall.pojo.User;
 import com.atwjsw.mmall.service.ICartService;
-import com.atwjsw.mmall.vo.CartProductVo;
 import com.atwjsw.mmall.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * Created by wenda on 6/5/2017.

@@ -1,10 +1,6 @@
 package com.atwjsw.mmall.common;
 
-import com.atwjsw.mmall.pojo.PayInfo;
 import com.google.common.collect.Sets;
-import com.google.zxing.ReaderException;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.javassist.bytecode.CodeAttribute;
 
 import java.util.Set;
 
