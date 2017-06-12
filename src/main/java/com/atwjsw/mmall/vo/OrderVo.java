@@ -24,7 +24,7 @@ public class OrderVo {
     private String imageHost; //"http://img.happymmall.com/",
     private Integer shippingId; //5,
     private String receiverName; //geely",
-    private ShippingVoNew shippingVo; //null
+    private ShippingVo shippingVo; //null
 
     public Long getOrderNo() {
         return orderNo;
@@ -154,11 +154,11 @@ public class OrderVo {
         this.receiverName = receiverName;
     }
 
-    public ShippingVoNew getShippingVo() {
+    public ShippingVo getShippingVo() {
         return shippingVo;
     }
 
-    public void setShippingVo(ShippingVoNew shippingVo) {
+    public void setShippingVo(ShippingVo shippingVo) {
         this.shippingVo = shippingVo;
     }
 }

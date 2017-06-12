@@ -3,7 +3,7 @@ package com.atwjsw.mmall.vo;
 /**
  * Created by wenda on 6/9/2017.
  */
-public class ShippingVoNew {
+public class ShippingVo {
 
     private String receiverName;
 
