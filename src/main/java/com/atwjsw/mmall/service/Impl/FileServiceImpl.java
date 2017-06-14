@@ -45,7 +45,7 @@ public class FileServiceImpl implements IFileService {
             FTPUtil.uploadFile(Lists.newArrayList(targetFile));
 
             //上传完之后，删除upload下面的文件， 保持Tomcat服务器的存储空间
-            targetFile.delete();
+//            targetFile.delete();
 
         } catch (IOException e) {
             logger.error("上传文件异常", e);
