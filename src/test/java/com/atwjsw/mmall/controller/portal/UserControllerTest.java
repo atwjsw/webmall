@@ -53,15 +53,7 @@ public class UserControllerTest {
         userController = new UserController(userService);
         userNotExist = ServerResponse.createByErrorMessage("用户名不存在");
         wrongPassword = ServerResponse.createByErrorMessage("密码错误");
-        User user = new User();
-        user.setId(13);
-        user.setUsername("geely");
-        user.setEmail("geely@happymmall.com");
-        user.setPhone("13800138000");
-        user.setQuestion("问题");
-        user.setAnswer("答案");
-        user.setRole(0);
-        success = ServerResponse.createBySuccess("登录成功", user);
+        success = ServerResponse.createBySuccess("登录成功", getUser());
         when(userService.login("geely", "geely")).thenReturn(success);
         when(userService.login("geely123", "geely")).thenReturn(userNotExist);
         when(userService.login("geely", "geely123")).thenReturn(wrongPassword);
@@ -136,4 +128,17 @@ public class UserControllerTest {
                 .andReturn().getResponse().getContentAsString();
         System.out.println("Return json = " + responseString);
     }
+
+    private User getUser() {
+        User user = new User();
+        user.setId(13);
+        user.setUsername("geely");
+        user.setEmail("geely@happymmall.com");
+        user.setPhone("13800138000");
+        user.setQuestion("问题");
+        user.setAnswer("答案");
+        user.setRole(0);
+        return user;
+    }
+
 }

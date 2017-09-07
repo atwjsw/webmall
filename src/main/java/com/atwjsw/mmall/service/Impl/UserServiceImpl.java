@@ -22,6 +22,14 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
 
+    public UserServiceImpl() {
+    }
+
+    public UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+
     @Override
     public ServerResponse<User> login(String username, String password) {
 
