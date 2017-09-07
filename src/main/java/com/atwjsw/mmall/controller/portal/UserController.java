@@ -27,6 +27,9 @@ public class UserController {
         this.iUserService = iUserService;
     }
 
+    public UserController() {
+    }
+
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
@@ -64,7 +67,7 @@ public class UserController {
     }
 
 //    getUserInfo(User)
-    @RequestMapping(value= "get_user_info.do", method = RequestMethod.POST)
+    @RequestMapping(value= "get_user_info.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
