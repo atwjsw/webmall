@@ -1,7 +1,7 @@
 <html>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <body>
-<h2>Hello World Andrew!</h2>
+<h2>Webmall v2.0</h2>
 
 springMVC上传文件
 <form name="form1" action="/manage/product/upload.do" method="post" enctype="multipart/form-data">
