@@ -6,6 +6,7 @@ import com.atwjsw.mmall.dao.UserMapper;
 import com.atwjsw.mmall.pojo.User;
 import com.atwjsw.mmall.service.Impl.UserServiceImpl;
 import com.atwjsw.mmall.util.MD5Util;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,8 @@ public class UserServiceTest {
         when(userMapper.checkUsername("geely123")).thenReturn(0);
         when(userMapper.selectLogin("geely", MD5Util.MD5EncodeUtf8("geely"))).thenReturn(getUser());
         when(userMapper.selectLogin("geely", MD5Util.MD5EncodeUtf8("geely123"))).thenReturn(null);
+        when(userMapper.selectByPrimaryKey(13)).thenReturn(getUser());
+        when(userMapper.selectByPrimaryKey(31)).thenReturn(null);
     }
 
     @Test
@@ -57,6 +60,20 @@ public class UserServiceTest {
         assertEquals("密码错误", wrongPassword.getMsg());
         assertNull(wrongPassword.getData());
     }
+
+    @Test
+    public void getInformation() {
+        ServerResponse<User> found = iUserService.getInformation(13);
+        assertEquals(0, found.getStatus());
+        assertEquals("geely", found.getData().getUsername());
+        assertEquals(StringUtils.EMPTY, found.getData().getPassword());
+        ServerResponse<User> notFound = iUserService.getInformation(31);
+        System.out.println(notFound);
+        assertEquals(1, notFound.getStatus());
+        assertEquals("找不到当前用户", notFound.getMsg());
+    }
+
+
 
 
 

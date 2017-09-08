@@ -9,25 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpSession;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,68 +52,76 @@ public class UserControllerTest {
     }
 
     @Test
-    public void login_success() {
-        ServerResponse sr = userController.login("geely", "geely", session);
-        assertTrue(sr.isSuccess());
-        assertEquals("登录成功", sr.getMsg());
-        assertEquals(0, sr.getStatus());
-        assertThat(sr.getData(), instanceOf(User.class));
+    public void login() {
+        ServerResponse<User> success = userController.login("geely", "geely", session);
+        assertTrue(success.isSuccess());
+        assertEquals("登录成功", success.getMsg());
+        assertEquals(0, success.getStatus());
+        assertEquals("geely", success.getData().getUsername());
+        ServerResponse userNameNotExists = userController.login("geely123", "geely", session);
+        assertFalse(userNameNotExists.isSuccess());
+        assertEquals("用户名不存在", userNameNotExists.getMsg());
+        assertEquals(1, userNameNotExists.getStatus());
+        assertNull(userNameNotExists.getData());
+        ServerResponse wrongPassword = userController.login("geely", "geely123", session);
+        assertFalse(wrongPassword.isSuccess());
+        assertEquals("密码错误", wrongPassword.getMsg());
+        assertEquals(1, wrongPassword.getStatus());
+        assertNull(wrongPassword.getData());
     }
 
     @Test
-    public void login_failure_username_not_exists() {
-        ServerResponse sr = userController.login("geely123", "geely", session);
-        assertFalse(sr.isSuccess());
-        assertEquals("用户名不存在", sr.getMsg());
-        assertEquals(1, sr.getStatus());
-        assertNull(sr.getData());
+    public void getUserInfo() {
+        ServerResponse loginSuccess = userController.login("geely", "geely", session);
+        assertTrue(loginSuccess.isSuccess());
+        ServerResponse<User> userInfo = userController.getUserInfo(session);
+        assertEquals("geely", userInfo.getData().getUsername());
+        session.clearAttributes();
+        ServerResponse loginFailure = userController.login("geely", "geely123", session);
+        ServerResponse<User> nullUser = userController.getUserInfo(session);
+        assertNull(nullUser.getData());
+        assertEquals(1, nullUser.getStatus());
+        assertEquals("用户未登录,无法获取当前用户信息", nullUser.getMsg());
     }
 
     @Test
-    public void login_failure_password_wrong() {
-        ServerResponse sr = userController.login("geely", "geely123", session);
-        assertFalse(sr.isSuccess());
-        assertEquals("密码错误", sr.getMsg());
-        assertEquals(1, sr.getStatus());
-        assertNull(sr.getData());
-    }
-
-    @Test
-    public void get_user_info_success() {
-        ServerResponse sr = userController.login("geely", "geely", session);
-        assertTrue(sr.isSuccess());
-        ServerResponse userInfo = userController.getUserInfo(session);
-        assertThat(userInfo.getData(), instanceOf(User.class));
-        sr = userController.login("geely", "geely123", session);
-        userInfo = userController.getUserInfo(session);
-        assertThat(userInfo.getData(), instanceOf(User.class));
-    }
-
-    @Test
-    public void get_user_info_failure() {
-        ServerResponse sr = userController.login("geely", "geely123", session);
-        assertFalse(sr.isSuccess());
-        ServerResponse userInfo = userController.getUserInfo(session);
-        System.out.println(userInfo);
-        assertNull(userInfo.getData());
-        assertEquals(1, userInfo.getStatus());
-        assertEquals("用户未登录,无法获取当前用户信息", userInfo.getMsg());
-    }
-
-    @Test
-    public void getUserInfo_success() throws Exception {
-//        UserController userController = new UserController();
+    public void getUserInfoMvc() throws Exception {
         MockMvc mockMvc = standaloneSetup(userController).build();
-        String responseString = mockMvc.perform(post("/user/login.do")
+        String success = mockMvc.perform(post("/user/login.do")
                 .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
                 .param("username", "geely")
                 .param("password", "geely"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.status").value(0))
-                .andDo(print())
+                .andExpect(jsonPath("$.msg").value("登录成功"))
+                .andExpect(jsonPath("$..username").value("geely"))
+//                .andDo(print())
                 .andReturn().getResponse().getContentAsString();
-        System.out.println("Return json = " + responseString);
+        System.out.println("Return json = " + success);
+        String wrongPassword = mockMvc.perform(post("/user/login.do")
+                .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+                .param("username", "geely")
+                .param("password", "geely123"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.status").value(1))
+                .andExpect(jsonPath("$.msg").value("密码错误"))
+//                .andDo(print())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println("Return json = " + wrongPassword);
+
+        String userNotExists = mockMvc.perform(post("/user/login.do")
+                .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+                .param("username", "geely123")
+                .param("password", "geely"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.status").value(1))
+                .andExpect(jsonPath("$.msg").value("用户名不存在"))
+//                .andDo(print())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println("Return json = " + userNotExists);
     }
 
     private User getUser() {
